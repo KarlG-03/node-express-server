@@ -7,7 +7,7 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-const connect = () => {
+export const connect = () => {
   pool.connect((err, client, release) => {
     if (err) {
       console.error('Error connecting to the database:', err.stack);
@@ -24,6 +24,13 @@ const connect = () => {
   });
 };
 
-connect();
+export const disconnect = async () => {
+  try {
+    await pool.end();
+    // console.log('Disconnected from PostgreSQL');
+  } catch (error) {
+    console.error('Error disconnecting from PostgreSQL', error);
+  }
+};
 
 export default pool;
